@@ -1,107 +1,162 @@
-**Visual Cockpit Layer** of your system using Node-RED dashboard.
+# 🚗 IoT Autonomous Vehicle Dashboard (Node-RED + MQTT)
 
-  Data live.
-
----
-
-# 🚀 Step 1 — Open Dashboard UI
-
-After installing:
-
-Node-RED dashboard package (`@flowfuse/node-red-dashboard`)
-
-Open in browser:
-
-```text id="dash1"
-http://localhost:1880/ui
-```
-
-👉 This is your **live IoT dashboard page**
+A real-time IoT dashboard system using **Node-RED**, **MQTT (Mosquitto)**, and Raspberry Pi as a broker for vehicle telemetry and ADAS simulation.
 
 ---
 
-# ⚙️ Step 2 — Create your first UI flow
+## 📌 Project Overview
 
-In Node-RED editor:
+This project demonstrates a full IoT pipeline:
 
-### Drag these nodes:
-
-```text id="flowdash"
-[inject] → [function] → [ui_text]
-```
-
----
-
-# 🧠 Step 3 — Configure Inject node
-
-Set:
-
-* Payload: string
-* Value: `Engine OK`
+* Sensor / Simulation Data Source
+* MQTT Communication Layer (Raspberry Pi Broker)
+* Node-RED Dashboard UI (Windows Laptop)
+* Real-time visualization (Speed, RPM, Battery, Alerts)
 
 ---
 
-# 🧠 Step 4 — Function node (format data)
+## 🧠 System Architecture
 
-Use this code:
-
-```javascript id="fn1"
-msg.payload = msg.payload;
-return msg;
+```text
+[ Sensors / ESP32 / Inject Nodes ]
+                ↓
+     MQTT Publish (topic/data)
+                ↓
+ [ Raspberry Pi 4 - Mosquitto Broker ]
+                ↓ MQTT Subscribe
+     [ Node-RED Dashboard (Windows) ]
+                ↓
+     UI: Charts / Gauges / Status
 ```
 
 ---
 
-# 📊 Step 5 — Configure Dashboard node
+## ⚙️ Technologies Used
 
-Double-click **ui_text**:
-
-| Field        | Value                       |
-| ------------ | --------------------------- |
-| Group        | Add new → Vehicle Dashboard |
-| Label        | Status                      |
-| Value format | {{msg.payload}}             |
+* Node-RED
+* Eclipse Mosquitto
+* MQTT Protocol
+* Raspberry Pi 4
+* Windows 10/11
 
 ---
 
-# ▶️ Step 6 — Deploy
+## 🖥️ Dashboard Features
 
-Click **Deploy**
+✔ Real-time telemetry display
+✔ MQTT live data streaming
+✔ Vehicle-style UI (cockpit view)
+✔ Speed / RPM / Battery simulation
+✔ Status indicators (Engine / ADAS alerts)
+
+
+## 📊 Install Dashboard
+
+Install modern dashboard:
+
+```bash
+npm install @flowfuse/node-red-dashboard
+```
+
+OR via Node-RED UI:
+
+* Menu → Manage Palette → Install
+* Search:
+
+```
+@flowfuse/node-red-dashboard
+```
 
 ---
 
-# 🎯 Step 7 — View result
 
-Open:
 
-```text id="ui1"
-http://localhost:1880/ui
-```
+### MQTT Broker Settings:
 
-You should see:
-
-```
-Status: Engine OK
-```
+| Field    | Value           |
+| -------- | --------------- |
+| Server   | xxx.xxx.xxx.xxx   |
+| Port     | 1883            |
+| Username | pi              |
+| Password | (xxxx) |
 
 ---
 
-# 🚗 Upgrade: Connect MQTT data to Dashboard
+## 📡 Example MQTT Topics
 
-Now replace Inject with MQTT:
+| Data Type | Topic          |
+| --------- | -------------- |
+| Speed     | /vehicle/speed |
+| RPM       | /engine/rpm    |
+| Battery   | /battery/soc   |
+| ADAS      | /adas/status   |
 
-```text id="flow2"
-[mqtt in] → [ui_text]
+---
+
+## 🧪 Example Flow
+
+```text
+[inject] → [mqtt out]
 ```
 
-Topic example:
+Payload:
 
-```text id="t1"
+```text
+Engine OK
+```
+
+Topic:
+
+```text
 test/topic
 ```
 
 ---
 
+## 📊 Dashboard Flow Example
+
+```text
+[mqtt in] → [ui_gauge]
+[mqtt in] → [ui_chart]
+[mqtt in] → [ui_text]
+```
+
+---
+
+## 🚗 Real-Time Use Case
+
+This system simulates:
+
+* Vehicle telemetry streaming
+* ECU data broadcasting
+* ADAS sensor feedback
+* Fleet monitoring system
+
+---
+
+---
+
+### loading Dashboard 
 
 
-Just tell me what module you want next 👍
+```text
+http://localhost:1880/dashboard
+```
+
+---
+
+## 📌 Future Improvements
+
+* CAN bus integration (SocketCAN)
+* Real vehicle ECU simulation
+* Cloud MQTT bridge (AWS / Azure)
+* AI-based ADAS detection system
+* Web-based fleet dashboard
+
+---
+
+## 👨‍💻 Mohd Fadli
+
+IoT Automotive Lab Project
+Node-RED + MQTT Vehicle Telemetry System
+
