@@ -54,8 +54,22 @@ By default, Node-RED is just a logic editor. To create the "Cockpit" for your au
 5.  Click **Install**.
 
 ---
+# 🔌  Connecting to the Raspberry Pi MQTT Broker
 
-## 🔌 Connecting to the Raspberry Pi MQTT Broker
+### ⚠ Important clarification
+
+Node-RED does NOT require manual npm install for MQTT in most cases.
+
+Instead:
+
+## ✔ Use built-in MQTT nodes OR enable via palette
+
+If missing, install:
+
+```bash
+node-red-contrib-mqtt
+```
+
 To receive data from your ESP32 via the Raspberry Pi, follow these steps in the Node-RED editor:
 
 1.  **Drag an `mqtt in` node** from the network section onto the flow.
@@ -72,7 +86,3 @@ To receive data from your ESP32 via the Raspberry Pi, follow these steps in the 
 
 ---
 
-## 🛠 Troubleshooting
-* **Command not found:** If `npm` isn't recognized, restart your computer after the Node.js installation.
-* **Firewall Prompt:** If Windows asks for permission to let Node.js communicate on the network, select **Private Networks** and click **Allow**.
-* **Connection Refused:** Ensure your laptop and the Raspberry Pi are on the **same Wi-Fi network**.
