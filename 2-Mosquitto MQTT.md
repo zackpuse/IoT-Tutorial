@@ -31,6 +31,17 @@ By default, Mosquitto denies external access. To secure and allow connections:
    allow_anonymous false
    password_file /etc/mosquitto/passwd
    ```
+4. Raspberry Pi Firewall (ufw)
+If you have a firewall enabled on your Pi, it will block incoming traffic on Port 1883.
+
+* **The Fix:** Open the port specifically for MQTT.
+* **Action:**
+    ```bash
+    sudo ufw allow 1883
+    ```
+
+---
+
 4. Restart: `sudo systemctl restart mosquitto`
 
 ---
