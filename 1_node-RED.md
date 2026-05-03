@@ -50,7 +50,7 @@ By default, Node-RED is just a logic editor. To create the "Cockpit" for your au
 1.  Open your browser to `http://localhost:1880`.
 2.  Click the **Menu** (three horizontal lines) in the top right corner.
 3.  Select **Manage Palette**.
-4.  Click the **Install** tab and search for: `node-red-dashboard`.
+4.  Click the **Install** tab and search for: `@flowfuse/node-red-dashboard`.
 5.  Click **Install**.
 
 ---
