@@ -56,10 +56,6 @@ By default, Node-RED is just a logic editor. To create the "Cockpit" for your au
 ---
 # 🔌  Connecting to the Raspberry Pi MQTT Broker
 
-### ⚠ Important clarification
-
-Node-RED does NOT require manual npm install for MQTT in most cases.
-
 Instead:
 
 ## ✔ Use built-in MQTT nodes OR enable via palette
