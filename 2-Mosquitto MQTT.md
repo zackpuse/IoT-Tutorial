@@ -35,6 +35,96 @@ By default, Mosquitto denies external access. To secure and allow connections:
 
 ---
 
+### 5. 🧠 Testing Mosquitto
+1. Check Mosquitto version
+
+```bash id="v3kq1a"
+mosquitto -v
+```
+
+👉 Output example:
+
+```
+mosquitto version 2.0.11
+```
+
+---
+
+2. 🟢 Check if Mosquitto is active (running service)
+
+### ✅ System service status
+
+```bash id="s8n2vc"
+sudo systemctl status mosquitto
+```
+
+---
+
+### 🔎 What you should see:
+
+If active:
+
+```
+Active: active (running)
+```
+
+If not running:
+
+```
+Active: inactive (dead)
+```
+
+---
+
+3. ⚡Quick lightweight check
+
+### Just check running state:
+
+```bash id="k4d7lm"
+systemctl is-active mosquitto
+```
+
+Output:
+
+* `active` → running
+* `inactive` → stopped
+* `failed` → error
+
+---
+4.📊 Check MQTT port (1883)
+
+To confirm broker is listening:
+
+```bash id="t9xqwo"
+sudo ss -tulnp | grep 1883
+```
+
+Expected:
+
+```
+LISTEN 0  ... :1883
+```
+
+---
+5.🧪 Test Message
+
+Try real publish/subscribe:
+
+### Terminal 1 (subscriber)
+
+```bash id="sub001"
+mosquitto_sub -h localhost -t test/topic -u pi -P YOUR_PASSWORD
+```
+
+### Terminal 2 (publisher)
+
+```bash id="pub001"
+mosquitto_pub -h localhost -t test/topic -m "Raspberry Pi MQTT OK" -u pi -P YOUR_PASSWORD
+```
+
+---
+
+
 ## 🧠 Phase 2: Basic MQTT Architecture
 This is the standard setup for general IoT projects (sensors, home automation, etc.).
 
