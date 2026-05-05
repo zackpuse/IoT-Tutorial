@@ -82,3 +82,246 @@ To receive data from your ESP32 via the Raspberry Pi, follow these steps in the 
 
 ---
 
+storage data local.
+
+Data saved:
+
+* temperature
+* humidity
+* throttle
+* timestamp
+
+---
+
+# ✅ STEP 1 — Install Required Node
+
+In Node-RED:
+
+### Menu → Manage palette → Install
+
+Search:
+
+```text id="8j3m9x"
+node-red-node-file
+```
+
+Install it.
+
+👉 This gives you the **file write node**
+
+---
+
+# ✅ STEP 2 — Create MQTT Inputs
+
+Add **3 MQTT IN nodes**:
+
+| Node   | Topic              |
+| ------ | ------------------ |
+| MQTT 1 | sensor/temperature |
+| MQTT 2 | sensor/humidity    |
+| MQTT 3 | sensor/throttle    |
+
+---
+
+# ✅ STEP 3 — Convert Each Topic (Function Nodes)
+
+Attach a **function node after each MQTT input**
+
+---
+
+## 🌡 Temperature Function
+
+```js id="kq9p1a"
+msg.topic = "temperature";
+msg.payload = parseFloat(msg.payload);
+return msg;
+```
+
+---
+
+## 💧 Humidity Function
+
+```js id="h3xq7n"
+msg.topic = "humidity";
+msg.payload = parseFloat(msg.payload);
+return msg;
+```
+
+---
+
+## 🎚 Throttle Function
+
+```js id="v9m2kd"
+msg.topic = "throttle";
+msg.payload = parseInt(msg.payload);
+return msg;
+```
+
+---
+
+# ✅ STEP 4 — JOIN DATA (VERY IMPORTANT)
+
+Add **JOIN node**
+
+### Configure it:
+
+* Mode: **manual**
+* Combine: **key/value object**
+* After receiving: **3 message parts**
+* Timeout: 2–5 seconds
+
+---
+
+### Output will become:
+
+```json id="z8kq2v"
+{
+  "temperature": 28,
+  "humidity": 65,
+  "throttle": 40
+}
+```
+
+---
+
+# ✅ STEP 5 — FORMAT TO CSV
+
+Add a **function node after JOIN**
+
+```js id="m4n7pq"
+let now = new Date().toISOString();
+
+let temp = msg.payload.temperature;
+let hum = msg.payload.humidity;
+let thr = msg.payload.throttle;
+
+msg.payload = `${now},${temp},${hum},${thr}\n`;
+
+return msg;
+```
+
+---
+
+# ✅ STEP 6 — FILE NODE (SAVE DATA)
+
+Add **file node**
+
+### Configure:
+
+* Action: **append to file**
+* Filename:
+
+### Windows:
+
+```text id="b7q2lm"
+D:/node-red/iot_data.csv
+```
+
+### Raspberry Pi / Linux:
+
+```text id="n9v4xq"
+/home/pi/iot_data.csv
+```
+
+---
+
+# ✅ STEP 7 — ADD HEADER (ONLY ONCE)
+
+Add **inject node (manual trigger)**
+
+Connect to a function:
+
+```js id="t3m8zx"
+msg.payload = "timestamp,temperature,humidity,throttle\n";
+return msg;
+```
+
+Then connect to SAME file node (append mode)
+
+👉 Click inject ONCE only at start
+
+---
+
+# 🟢 FINAL FLOW STRUCTURE
+
+```text id="l2q8pn"
+MQTT(temp) ─┐
+MQTT(hum)  ─┼→ Function → JOIN → CSV FORMAT → FILE
+MQTT(thr)  ─┘
+
+Inject (header) → FILE (once)
+```
+
+---
+
+# 📁 RESULTING FILE
+
+Your CSV will look like:
+
+```csv id="r8v3mk"
+timestamp,temperature,humidity,throttle
+2026-05-05T10:00:00Z,28,65,40
+2026-05-05T10:00:05Z,29,66,42
+2026-05-05T10:00:10Z,30,67,45
+```
+
+---
+
+# ⚠️ IMPORTANT PRACTICAL TIPS
+
+## 1. Avoid data flooding
+
+Use ESP32 interval:
+
+* 2–5 seconds minimum
+
+---
+
+## 2. Ensure folder exists
+
+Node-RED WILL NOT create folders automatically.
+
+---
+
+## 3. Safe shutdown
+
+Do not power off while writing heavily (risk file corruption)
+
+---
+
+## 4. Recommended upgrade
+
+Use:
+
+* Raspberry Pi (best logging stability)
+* or Windows PC Node-RED service
+
+---
+
+# 🧠 ENGINEERING VIEW
+
+You just built:
+
+✔ Real-time acquisition system
+✔ Data logger (blackbox style)
+✔ Multi-sensor fusion pipeline
+
+This is similar to:
+
+* Automotive ECU logging
+* Industrial PLC historian
+* Flight recorder system concept
+
+---
+
+# 🚀 NEXT LEVEL (OPTIONAL UPGRADE)
+
+If you want, I can upgrade this to:
+
+✔ Graph dashboard from CSV
+✔ Auto file rotation (daily logs)
+✔ Excel auto-report generator
+✔ SD card logging on ESP32 (offline system)
+✔ Cloud sync backup system
+
+Just tell 👍
