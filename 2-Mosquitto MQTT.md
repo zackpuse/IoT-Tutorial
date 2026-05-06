@@ -42,8 +42,10 @@ If you have a firewall enabled on your Pi, it will block incoming traffic on Por
 
 ---
 
-4. Restart: `sudo systemctl restart mosquitto`
-
+4. Restart: 
+ ```bash
+    sudo systemctl restart mosquitto
+    ```
 ---
 
 ### 5. 🧠 Testing Mosquitto
